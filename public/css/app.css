@@ -17432,12 +17432,27 @@ label.panel-block:hover {
   display: none;
   position: absolute;
   left: 0;
-  top: 100%;
+  top: 103%;
   z-index: 1000;
   background-color: white;
   min-width: 200px;
   text-align: left;
   box-shadow: 0 0 1px rgba(57, 70, 78, 0.15), 0 20px 55px -8px rgba(57, 70, 78, 0.25);
+}
+
+.dropdown li.seperator {
+  border-top: 1px solid #ccc;
+  margin: 5px 0;
+}
+
+.dropdown li > a {
+  margin: 5px 0;
+  padding: 5px 0 5px 15px;
+  display: block;
+}
+
+.dropdown li > a:hover {
+  background-color: whitesmoke;
 }
 
 .dropdown.is-aligned-right .dropdown-menu {
@@ -17449,9 +17464,47 @@ label.panel-block:hover {
   display: block;
 }
 
-img.logo {
-  margin-top: 0px;
-  height: 25px;
+button.navbar-item {
+  background-color: white;
+  border: none;
+  color: #7a7a7a;
+}
+
+button.navbar-item:hover {
+  color: #363636;
+}
+
+button.navbar-item.is-active {
+  color: #363636;
+}
+
+button.navbar-item.is-tab {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  padding-bottom: calc(0.75rem - 1px);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: calc(0.75rem - 1px);
+}
+
+button.navbar-item.is-tabhover {
+  border-bottom-color: #00d1b2;
+  border-top-color: transparent;
+}
+
+button.navbar-item.is-tab.is-active {
+  border-bottom: 3px solid #00d1b2;
+  color: #00d1b2;
+  padding-bottom: calc(0.75rem - 3px);
+}
+
+nav.navbar {
+  height: 4.5rem;
+}
+
+.navbar-item img.logo {
+  margin-top: 15px;
+  max-height: 2.5rem;
   vertical-align: bottom;
 }
 

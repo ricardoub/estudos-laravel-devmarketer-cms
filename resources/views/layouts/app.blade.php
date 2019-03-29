@@ -35,19 +35,39 @@
         </div>
         
         <div class="navbar-end">
-          @if (Auth::guest())
+          @if (!Auth::guest())
             <a href="" class="navbar-item is-tab">Login</a>
             <a href="" class="navbar-item is-tab">Join the Community</a>
           @else
-            <button class="dropdown navbar-item is-tab">
+            <button class="dropdown navbar-item is-tab is-aligned-right">
               Hey Alex <span class="icon"><i class="fa fa-caret-down"></i></span>
               
               <ul class="dropdown-menu">
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Notifications</a></li>
-                <li><a href="#">Manage</a></li>
+                <li>
+                  <a href="#">
+                    <span class="icon"><i class="fa fa-fw fa-user-circle-o m-r-5"></i></span>
+                    Profile
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <span class="icon"><i class="fa fa-fw fa-bell m-r-5"></i></span>
+                    Notifications
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <span class="icon"><i class="fa fa-fw fa-cog m-r-5"></i></span>
+                    Manage
+                  </a>
+                </li>
                 <li class="seperator"></li>
-                <li><a href="#">Logout</a></li>
+                <li>
+                  <a href="#">
+                    <span class="icon"><i class="fa fa-fw fa-sign-out m-r-5"></i></span>
+                    Logout
+                  </a>
+                </li>
               </ul>
             </button>
           @endif
