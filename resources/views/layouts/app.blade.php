@@ -75,7 +75,10 @@
       </div>
     </nav>
 
-    @yield('content')
+    <div class="is-bg-ef">
+      @yield('content')
+    </div>
+
 
   </div>
 </body>

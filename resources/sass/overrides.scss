@@ -1,3 +1,24 @@
+/* ================================
+   ===== Background Overrides =====
+   ================================*/
+   .is-bg-ef {
+  background-color: #efefef;
+}
+
+/* ================================
+   ======= Text Overrides =========
+   ================================*/
+.is-muted {
+  color: $grey-light !important;
+}
+.is-muted:hover {
+  color: $grey !important;
+}
+
+/* ================================
+   ====== Dropdown Overrides ======
+   ================================*/
+
 .dropdown {
   position: relative;
 
@@ -89,3 +110,4 @@ nav.navbar {
   max-height: 2.5rem;
   vertical-align: bottom;
 }
+

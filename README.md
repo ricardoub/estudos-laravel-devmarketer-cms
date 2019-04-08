@@ -1,5 +1,10 @@
 # Devmarketer Blog/CMS course
 
+3. ep.9
+- commands
+  - npm run watch
+  - php artisan serve
+  
 2. ep.8
 - artisan commands
   - php artisan make:auth
