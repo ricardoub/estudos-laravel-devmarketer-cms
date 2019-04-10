@@ -8,7 +8,7 @@
     <div class="column is-one-third is-offset-one-third">
       <div class="card">
         <div class="card-content">
-          <h1 class="title">{{ __('Register') }}</h1> 
+          <h1 class="title">{{ __('Join te Community') }}</h1> 
           
           <form method="POST" action="{{ route('register') }}" role="form">
             @csrf

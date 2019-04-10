@@ -36,8 +36,8 @@
         
         <div class="navbar-end">
           @if (!Auth::guest())
-            <a href="" class="navbar-item is-tab">Login</a>
-            <a href="" class="navbar-item is-tab">Join the Community</a>
+            <a href="{{ route('login') }}" class="navbar-item is-tab">Login</a>
+            <a href="{{ route('register') }}" class="navbar-item is-tab">Join the Community</a>
           @else
             <button class="dropdown navbar-item is-tab is-aligned-right">
               Hey Alex <span class="icon"><i class="fa fa-caret-down"></i></span>
