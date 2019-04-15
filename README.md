@@ -1,5 +1,21 @@
 # Devmarketer Blog/CMS course
 
+4. ep.10
+- laratrust instalation
+  - url: laratrust.readthedocs.io
+  - commands
+    - composer require "santigarcor/laratrust:4.0.*"
+    - php artisan vendor:publish --tag="laratrust"
+    - php artisan laratrust:migration
+    - php artisan migrate
+    - php artisan make:model Role
+    - php artisan make:model Permission
+    - edit model User
+      - composer dump-autoload
+    - edit laratrust_seeder
+      - composer dump-autoload
+      - php artisan db:seed
+
 3. ep.9
 - commands
   - npm run watch
