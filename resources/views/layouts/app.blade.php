@@ -19,67 +19,19 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('styles')
 </head>
 <body>
   <div id="app">
 
-    <nav class="navbar has-shadow">
-      <div class="container">
-        <div class="navbar-start">
-          <a class="navbar-item h-50 m-r-10">
-            <img class="logo" src="{{asset('images/devmarketer-logo.png')}}" alt="DevMarketer Logo" />
-          </a>
-          <a href="#" class="navbar-item is-tab is-hidden-mobile m-l-5">Learn</a>
-          <a href="#" class="navbar-item is-tab is-hidden-mobile m-l-5">Discuss</a>
-          <a href="#" class="navbar-item is-tab is-hidden-mobile m-l-5">Share</a>
-        </div>
-        
-        <div class="navbar-end">
-          @if (!Auth::guest())
-            <a href="{{ route('login') }}" class="navbar-item is-tab">Login</a>
-            <a href="{{ route('register') }}" class="navbar-item is-tab">Join the Community</a>
-          @else
-            <button class="dropdown navbar-item is-tab is-aligned-right">
-              Hey Alex <span class="icon"><i class="fa fa-caret-down"></i></span>
-              
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="#">
-                    <span class="icon"><i class="fa fa-fw fa-user-circle-o m-r-5"></i></span>
-                    Profile
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span class="icon"><i class="fa fa-fw fa-bell m-r-5"></i></span>
-                    Notifications
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span class="icon"><i class="fa fa-fw fa-cog m-r-5"></i></span>
-                    Manage
-                  </a>
-                </li>
-                <li class="seperator"></li>
-                <li>
-                  <a href="#">
-                    <span class="icon"><i class="fa fa-fw fa-sign-out m-r-5"></i></span>
-                    Logout
-                  </a>
-                </li>
-              </ul>
-            </button>
-          @endif
-        </div>
-      </div>
-    </nav>
+    @include('_includes.nav.main')
 
     <div class="is-bg-ef">
       @yield('content')
     </div>
 
-
+    <script src="{{ asset('js/app.js') }}"></script>
+    @yield('scripts')
   </div>
 </body>
 </html>
