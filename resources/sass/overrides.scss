@@ -1,8 +1,24 @@
 /* ================================
    ===== Background Overrides =====
    ================================*/
-   .is-bg-ef {
-  background-color: #efefef;
+.is-bg-ef {
+  background-color: #efefef !important;
+}
+.is-bg-eee {
+  background-color: #eeeeee !important;
+}
+.is-bg-ddd {
+  background-color: #dddddd !important;
+}
+.is-bg-ccc {
+  background-color: #cccccc !important;
+}
+.is-bg-bbb {
+  background-color: #bbbbbb !important;
+}
+
+.is-vh-100 {
+  height: 100vh;
 }
 
 /* ================================
@@ -57,6 +73,10 @@
   }
 
   &.is-open .dropdown-menu {
+    display: block;
+  }
+
+  &:hover .dropdown-menu {
     display: block;
   }
 }

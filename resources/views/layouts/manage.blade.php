@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!--title>{{ config('app.name', 'DevMarketer') }}</title-->
-    <title>Devmarketer</title>
+    <title>Devmarketer - MANAGEMENT - Advanced CMS</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -26,12 +26,15 @@
 
     @include('_includes.nav.main')
 
-    <div class="is-bg-eee">
+    @include('_includes.nav.manage')
+
+    <div class="is-bg-eee is-vh-100">
       @yield('content')
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>
     @yield('scripts')
+
   </div>
 </body>
 </html>
