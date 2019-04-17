@@ -24,12 +24,22 @@
 <body>
   <div id="app">
 
-    @include('_includes.nav.main')
+    @include('_includes.nav.menuh-navbar')
 
-    @include('_includes.nav.manage')
+    <div class="container is-fluid">
+    
+      <div class="columns is-vh-100">
 
-    <div class="is-bg-eee is-vh-100">
-      @yield('content')
+        <div class="column is-one-fifth is-bg-eee">
+          @include('_includes.nav.manage')        
+        </div>
+  
+        <div class="column is-four-fifths">
+          @yield('content')
+        </div>
+
+      </div>
+
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>

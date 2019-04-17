@@ -26,8 +26,12 @@
 
     @include('_includes.nav.main')
 
-    <div class="is-bg-eee">
-      @yield('content')
+    <div class="container">
+
+      <div class="is-bg-eee">
+        @yield('content')
+      </div>
+
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>

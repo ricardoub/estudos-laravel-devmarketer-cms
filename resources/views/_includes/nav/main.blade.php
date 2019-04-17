@@ -1,5 +1,5 @@
 <nav class="navbar has-shadow">
-  <div class="container">
+  <div class="container is-fluid">
     <div class="navbar-start">
       <a class="navbar-item h-50 m-r-10" href="{{route('home')}}">
         <img class="logo" src="{{asset('images/devmarketer-logo.png')}}" alt="DevMarketer Logo" />
