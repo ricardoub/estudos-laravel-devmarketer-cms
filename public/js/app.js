@@ -54193,16 +54193,15 @@ Vue.use(buefy__WEBPACK_IMPORTED_MODULE_0___default.a); // Vue.component('example
 // const app = new Vue({
 //     el: '#app'
 // });
-
-var app = new Vue({
-  el: '#app',
-  data: {}
-});
-$(document).ready(function () {
-  $('button.dropdown').hover(function (e) {
-    $(this).toggleClass('is-open');
-  });
-});
+//var app = new Vue({
+//  el: '#app',
+//  data: {}
+//});
+//$(document).ready(function(){
+//  $('button.dropdown').hover(function(e) {
+//    $(this).toggleClass('is-open');
+//  });
+//});
 
 /***/ }),
 

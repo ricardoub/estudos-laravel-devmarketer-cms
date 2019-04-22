@@ -26,7 +26,7 @@ class UserController extends Controller
    */
   public function create()
   {
-    return view('manage.users.create');
+    return view('manage.users.create'); 
   }
 
   /**
@@ -37,7 +37,35 @@ class UserController extends Controller
    */
   public function store(Request $request)
   {
-      //
+    $this->validate($request, [
+      'name' => 'required|max:255',
+      'email' => 'required|email|unique:users'
+    ]);
+
+    if (Request::has('password') && !empty($request->password)) {
+      $password = trim($request->password);
+    } else {
+      $length = 10;
+      $keyspace = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      $str = '';
+      $max = mb_strlen($keyspace, '8bit') -1;
+      for ($i = 0; i < $length; $i++) {
+        $str .= $keyspace[random_int(0, $max)];
+      }
+      $password = $str;
+    }
+
+    $user = new User();
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->password = $request->Hash::make($password);
+    
+    if ($user->save()) {
+      return redirect()->route('users.show', $user->id);
+    } else {
+      Session::flash('danger', 'Sorry a problem ocorred while creating this user.');
+      return redirect()->route('users.create');
+    }
   }
 
   /**
@@ -48,7 +76,8 @@ class UserController extends Controller
    */
   public function show($id)
   {
-      //
+    $user = User::findOrFail($id);
+    return view('manage.users.show')->withUser($user);
   }
 
   /**
@@ -59,7 +88,8 @@ class UserController extends Controller
    */
   public function edit($id)
   {
-      //
+    //$user = User::findOrFail($id);
+    //return view('manage.users.edit')->withUser($user);
   }
 
   /**
