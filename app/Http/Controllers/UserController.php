@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use DB;
+use Session;
+use Hash;
 
 class UserController extends Controller
 {
@@ -88,8 +91,8 @@ class UserController extends Controller
    */
   public function edit($id)
   {
-    //$user = User::findOrFail($id);
-    //return view('manage.users.edit')->withUser($user);
+    $user = User::findOrFail($id);
+    return view('manage.users.edit')->withUser($user);
   }
 
   /**
@@ -101,7 +104,35 @@ class UserController extends Controller
    */
   public function update(Request $request, $id)
   {
-      //
+    $this->validate($request, [
+      'name' => 'required|max:255',
+      'email' => 'required|email|unique:users,email,'.$id
+    ]);
+
+    $user = User::findOrFail($id);
+    $user->name = $request->name;
+    $user->email = $request->email;
+
+    if ($request->password == 'auto') {
+      $length = 10;
+      $keyspace = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      $str = '';
+      $max = mb_strlen($keyspace, '8bit') -1;
+      for ($i = 0; i < $length; $i++) {
+        $str .= $keyspace[random_int(0, $max)];
+      }
+      $user->password = Hash::make($str);
+    } elseif ($request->password == 'manual') {
+      $user->password = Hash::make($request->password);
+    }
+
+    if ($user->save()) {
+      return redirect()->route('users.show', $id);
+    } else {
+      Session::flash('danger', 'There was a problem saving the updated user into the database. Try again.');
+      return redirect()->route('users.edit', $id);
+    }
+
   }
 
   /**
