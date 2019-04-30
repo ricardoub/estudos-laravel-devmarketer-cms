@@ -51,6 +51,7 @@
 
           <div class="columns" v-if="permissionType == 'crud'">
             <div class="column is-one-quarter m-t-50">
+              
               <b-checkbox-group v-model="crudSelected">
                 <div class="field">
                   <b-checkbox v-model="crudSelected" native-value="create">Create</b-checkbox>
