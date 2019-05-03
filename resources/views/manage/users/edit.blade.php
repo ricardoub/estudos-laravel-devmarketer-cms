@@ -4,7 +4,7 @@
   <div class="flex-container">
     <div class="columns m-t-10">
       <div class="column">
-        <h1 class="title">Edit User</h1>
+        <h1 class="title">Edit User: <em>{{$user->name}}</em></h1>
       </div>
     </div>
     <hr class="m-t-0">
@@ -45,12 +45,28 @@
               </div>
             </b-radio-group>
           </div>
+
         </div> <!-- end of .column -->
-      </div>
+
+        <div class="column is-one-third">
+          <label for="roles" class="label">Roles:</label>
+          <input type="hidden" name="roles" :value="rolesSelected" />
+          
+          @foreach ($roles as $role)
+            <div class="field">
+              <b-checkbox v-model="rolesSelected" :native-value="{{$role->id}}">
+                {{$role->display_name}}
+              </b-checkbox>
+            </div>
+          @endforeach
+        </div>
+
+      </div> <!-- end of columns -->
+
       <div class="columns">
         <div class="column">
           <hr />
-          <button class="button is-primary is-pulled-right" style="width: 250px;">Edit User</button>
+          <button class="button is-primary is-pulled-right" style="width: 250px;">Save User changes</button>
         </div>
       </div>
     </form>
@@ -64,7 +80,8 @@
     var app = new Vue({
       el: '#app',
       data: {
-        password_options: 'keep'
+        password_options: 'keep',
+        rolesSelected: {!! $user->roles->pluck('id') !!}
       }
     });
   </script>
