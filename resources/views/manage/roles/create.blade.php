@@ -5,15 +5,14 @@
     <div class="columns m-t-10">
       <div class="column">
         <h1 class="title">
-          Edit {{$role->display_name}}
+          Create new Role
         </h1>
       </div>
     </div>
 
-    <form action="{{route('roles.update', $role->id)}}" method="POST">
+    <form action="{{route('roles.store')}}" method="POST">
       {{ csrf_field() }}
-      {{ method_field('PUT')}}
-
+      
       <div class="columns">
         <div class="column">
           <div class="box">
@@ -24,21 +23,21 @@
               <div class="field">
                 <p class="control">
                   <label for="display_name" class="label">Name (Human Readable)</label>
-                  <input type="text" class="input" name="display_name" id="display_name" value="{{$role->display_name}}">
+                  <input type="text" class="input" name="display_name" id="display_name" value="{{old('display_name')}}">
                 </p>
               </div>
 
               <div class="field">
                 <p class="control">
-                  <label for="name" class="label">Slug (Can not be edited)</label>
-                  <input type="text" class="input" name="name" id="name" value="{{$role->name}}" disabled>
+                  <label for="name" class="label">Slug (Can not be changed)</label>
+                  <input type="text" class="input" name="name" id="name" value="{{old('name')}}" >
                 </p>
               </div>
 
               <div class="field">
                 <p class="control">
                   <label for="description" class="label">Description</label>
-                  <input type="text" class="input" name="description" id="description" value="{{$role->description}}">
+                  <input type="text" class="input" name="description" id="description" value="{{old('description')}}">
                 </p>
               </div>
 
@@ -71,7 +70,7 @@
             </article>
           </div> <!-- end of .box -->
   
-          <button class="button is-primary">Save Changes</button>
+          <button class="button is-primary">Create new Role</button>
         </div>
       </div>
     
@@ -85,7 +84,7 @@
     var app = new Vue({
       el:'#app',
       data: {
-        permissionsSelected: {!!$role->permissions->pluck('id')!!}
+        permissionsSelected: []
       }
     });
   </script>
