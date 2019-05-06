@@ -11,6 +11,7 @@
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
+
     </div>
     
     <div id="navbarBasicExample" class="navbar-menu">
@@ -18,14 +19,13 @@
         
         <a href="#" class="navbar-item">Learn</a>
         <a href="#" class="navbar-item">Discuss</a>
-        <a href="#" class="navbar-item">Share</a>
-  
+        <a href="#" class="navbar-item">Share</a>  
 
       </div>
   
       <div class="navbar-end">
 
-        @if (Auth::guest())
+        @guest
           <a href="{{ route('login') }}" class="navbar-item is-tab">Login</a>
           <a href="{{ route('register') }}" class="navbar-item is-tab">Join the Community</a>
         @else
@@ -61,7 +61,7 @@
             </div>
           </div>
 
-        @endif
+        @endguest
 
       </div>
 

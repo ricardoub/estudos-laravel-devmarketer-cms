@@ -11,7 +11,10 @@
   },
   "devDependencies": {
     "axios": "^0.18",
+    "buefy": "^0.7.5",
+    "bulma": "^0.7.4",
     "cross-env": "^5.1",
+    "font-awesome": "^4.7.0",
     "jquery": "^3.4.0",
     "laravel-mix": "^4.0.7",
     "lodash": "^4.17.5",
