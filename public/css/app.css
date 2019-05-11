@@ -18796,7 +18796,7 @@ nav.navbar {
 .submenu {
   max-height: 0;
   overflow: hidden;
-  transition: all 0.2s ease-in-out;
+  /*transition: all 0.2s ease-in-out;*/
 }
 
 .menu-list li ul {
