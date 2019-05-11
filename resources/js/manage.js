@@ -11,7 +11,7 @@ for (var i = 0; i < accordions.length; i++) {
       submenu.style.marginTop = null
       submenu.style.marginBottom = null
     } else {
-      // meny is close, so we need to open it
+      // menu is close, so we need to open it
       submenu.style.maxHeight = submenu.scrollHeight + "px"
       submenu.style.marginTop = "0.75em"
       submenu.style.marginBottom = "0.75em"
