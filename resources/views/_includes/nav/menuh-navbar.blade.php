@@ -2,10 +2,16 @@
   <div class="container is fluid">
 
     <div class="navbar-brand">
+      @if (Request::segment(1) == "manage") 
+        <a class="navbar-item is-hidden-desktop m-t-10" id="admin-slideout-button">
+          <span class="icon"><i class="fa fa-arrow-circle-o-right"></i></span>
+        </a>
+      @endif
+  
       <a class="navbar-item h-50 m-r-10" href="{{ route('home') }}">
         <img class="logo" src="{{asset('images/devmarketer-logo.png')}}" alt="DevMarketer Logo" />
       </a>
-  
+
       <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>

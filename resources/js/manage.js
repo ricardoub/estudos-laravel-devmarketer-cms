@@ -1,4 +1,10 @@
 const accordions = document.getElementsByClassName('has-submenu')
+const adminSlideButton = document.getElementById('admin-slideout-button')
+
+adminSlideButton.onclick = function () {
+  this.classList.toggle('is-active');
+  document.getElementById('admin-side-menu').classList.toggle('is-active');
+}
 
 for (var i = 0; i < accordions.length; i++) {
 

@@ -22,24 +22,14 @@
     @yield('styles')
 </head>
 <body>
-  <div id="app">
+  <div>
 
     @include('_includes.nav.menuh-navbar')
-
-    <div class="container is-fluid">
     
-      <div class="columns is-vh-100">
+    @include('_includes.nav.manage')
 
-        <div class="column is-one-fifth is-bg-eee">
-          @include('_includes.nav.manage')        
-        </div>
-  
-        <div class="column is-four-fifths">
-          @yield('content')
-        </div>
-
-      </div>
-
+    <div class="management-area" id="app">
+      @yield('content')
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>
