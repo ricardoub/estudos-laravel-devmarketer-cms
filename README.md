@@ -1,5 +1,11 @@
 # Devmarketer Blog/CMS course
 
+5. ep.20
+- posts estruture
+  - php artisan make:migration create_posts_table --create=posts
+    - campos de relacionamento entre tableas devem ser bigInteger()->unsigned()
+  - php artisan migrate
+
 4. ep.10
 - laratrust instalation
   - url: laratrust.readthedocs.io
