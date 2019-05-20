@@ -24,6 +24,8 @@ Route::prefix('manage')->middleware('role:superadministrator|editor|author|contr
     Route::resource('/users', 'UserController', ['except' => 'destroy']);
     Route::resource('/permissions', 'PermissionController', ['except' => 'destroy']);
     Route::resource('/roles', 'RoleController', ['except' => 'destroy']);
+
+    Route::resource('/posts', 'PostController');
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

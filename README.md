@@ -4,7 +4,9 @@
 - posts estruture
   - php artisan make:migration create_posts_table --create=posts
     - campos de relacionamento entre tableas devem ser bigInteger()->unsigned()
-  - php artisan migrate
+    - php artisan migrate
+  - php artisan make:controller PostController
+  - route resource
 
 4. ep.10
 - laratrust instalation
