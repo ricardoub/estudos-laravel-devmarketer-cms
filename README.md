@@ -1,5 +1,9 @@
 # Devmarketer Blog/CMS course
 
+6. ep 22
+- slug 
+  - yarn add slug --dev
+
 5. ep.20
 - posts estruture
   - php artisan make:migration create_posts_table --create=posts

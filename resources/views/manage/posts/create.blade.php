@@ -23,12 +23,14 @@
       <div class="columns">
         <div class="column is-three-quarters">
           <b-field>
-            <b-input placeholder="Post Title" size="is-large"></b-input>
+            <b-input placeholder="Post Title" size="is-large" v-model="title" autofocus></b-input>
           </b-field>
 
-          <p>{{url('/blog')}}</p>
+          {{--<p>{{url('/blog')}}</p>--}}
+          <slug-widget url="{{url('/')}}" subdirectory="blog" :title="title" @slug-changed="updateSlug"></slug-widget>
+          <input type="hidden" v-model="slug" name="slug" />
 
-          <b-field>
+          <b-field class="m-t-15">
             <b-input 
               type="textarea" 
               placeholder="Compose your masterpiece..." 
@@ -87,7 +89,16 @@
   <script>
     var app = new Vue({
       el: '#app',
-      data: {}
+      data: {
+        title: '',
+        slug: ''
+      },
+      methods: {
+        updateSlug: function(val) {
+          this.slug = val;
+        }
+        
+      }
     });
   </script>
 @endsection
