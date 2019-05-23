@@ -1,5 +1,13 @@
 # Devmarketer Blog/CMS course
 
+7. ep.23
+- API token autentication
+  - php artisan migrate:reset
+  - add api_token on user migration
+  - php artisan migrate
+  - add openssl_random function on user migration
+  - php artisan db:seed
+
 6. ep 22
 - slug 
   - yarn add slug --dev
