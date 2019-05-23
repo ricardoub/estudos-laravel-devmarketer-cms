@@ -7,6 +7,9 @@
   - php artisan migrate
   - add openssl_random function on user migration
   - php artisan db:seed
+- User
+  - UserObserver
+  - php artisan make:provider ObserverServiceProvider
 
 6. ep 22
 - slug 

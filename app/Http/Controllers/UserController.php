@@ -8,6 +8,7 @@ use App\Role;
 use DB;
 use Session;
 use Hash;
+use Input;
 
 class UserController extends Controller
 {
@@ -30,7 +31,8 @@ class UserController extends Controller
    */
   public function create()
   {
-    return view('manage.users.create'); 
+    $roles = Role::all();
+    return view('manage.users.create')->withRoles($roles);
   }
 
   /**
@@ -46,14 +48,14 @@ class UserController extends Controller
       'email' => 'required|email|unique:users'
     ]);
 
-    if (Request::has('password') && !empty($request->password)) {
+    if (!empty($request->password)) {
       $password = trim($request->password);
     } else {
       $length = 10;
       $keyspace = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
       $str = '';
       $max = mb_strlen($keyspace, '8bit') -1;
-      for ($i = 0; i < $length; $i++) {
+      for ($i = 0; $i < $length; $i++) {
         $str .= $keyspace[random_int(0, $max)];
       }
       $password = $str;
@@ -62,6 +64,15 @@ class UserController extends Controller
     $user = new User();
     $user->name = $request->name;
     $user->email = $request->email;
+    $user->password = Hash::make($password);
+    $user->save();
+
+    if ($request->roles) {
+      $user->syncRoles(explode(',', $request->roles));
+    }
+    return redirect()->route('users.show', $user->id);
+
+    /*
     $user->password = $request->Hash::make($password);
     
     if ($user->save()) {
@@ -70,6 +81,7 @@ class UserController extends Controller
       Session::flash('danger', 'Sorry a problem ocorred while creating this user.');
       return redirect()->route('users.create');
     }
+    */
   }
 
   /**
@@ -120,7 +132,7 @@ class UserController extends Controller
       $keyspace = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
       $str = '';
       $max = mb_strlen($keyspace, '8bit') -1;
-      for ($i = 0; i < $length; $i++) {
+      for ($i = 0; $i < $length; $i++) {
         $str .= $keyspace[random_int(0, $max)];
       }
       $user->password = Hash::make($str);
