@@ -27,7 +27,7 @@
           </b-field>
 
           {{--<p>{{url('/blog')}}</p>--}}
-          <slug-widget url="{{url('/')}}" subdirectory="blog" :title="title" @slug-changed="updateSlug"></slug-widget>
+        <slug-widget url="{{url('/')}}" subdirectory="blog" :title="title" @slug-changed="updateSlug"></slug-widget>
           <input type="hidden" v-model="slug" name="slug" />
 
           <b-field class="m-t-15">
@@ -78,7 +78,6 @@
         </div> <!-- end of .column.is-one-quarter -->
       </div>
 
-
     </form>
     
   </div>
@@ -91,7 +90,8 @@
       el: '#app',
       data: {
         title: '',
-        slug: ''
+        slug: '',
+        api_token: '{{Auth::user()->api_token}}'
       },
       methods: {
         updateSlug: function(val) {

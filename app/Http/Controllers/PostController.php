@@ -3,9 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Post;
 
 class PostController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('role:superadministrator|administrator|editor|author|contributor');
+  }
+
   /**
   * Display a listing of the resource.
   *
@@ -34,7 +40,7 @@ class PostController extends Controller
   */
   public function store(Request $request)
   {
-      //
+    //
   }
 
   /**
@@ -45,7 +51,7 @@ class PostController extends Controller
   */
   public function show($id)
   {
-      //
+    //
   }
 
   /**
@@ -56,7 +62,7 @@ class PostController extends Controller
   */
   public function edit($id)
   {
-      //
+    //
   }
 
   /**
@@ -68,7 +74,7 @@ class PostController extends Controller
   */
   public function update(Request $request, $id)
   {
-      //
+    //
   }
 
   /**
@@ -79,6 +85,12 @@ class PostController extends Controller
   */
   public function destroy($id)
   {
-      //
+    //
   }
+
+  public function apiCheckUnique(Request $request)
+  {
+    return json_encode(!Post::where('slug', '=', $request->slug)->exists());
+  }
+
 }

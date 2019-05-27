@@ -2038,6 +2038,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     url: {
@@ -2055,39 +2069,77 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      slug: this.convertTitle(),
+      slug: this.setSlug(this.title),
+      truncatedSlug: '',
       isEditing: false,
       customSlug: '',
-      wasEdited: false
+      wasEdited: false,
+      api_token: this.$root.api_token
     };
   },
   methods: {
-    convertTitle: function convertTitle() {
-      return Slug(this.title);
+    adjustWidth: function adjustWidth(event) {
+      var val = event.target.value;
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      ctx.font = "14px sans-serif";
+      var slugEditorInput = document.getElementById('slu-editor');
+      slugEditorInput.style.width = Math.ceil(ctx.measureText(val).width + 25) + "px";
     },
     editSlug: function editSlug() {
       this.customSlug = this.slug;
+      this.$emit('edit', this.slug);
       this.isEditing = true;
     },
     saveSlug: function saveSlug() {
+      var oldSlug = this.slug;
+      this.setSlug(this.customSlug);
       if (this.customSlug !== this.slug) this.wasEdited = true;
-      this.slug = Slug(this.customSlug);
+      this.$emit('save', this.slug);
       this.isEditing = false;
     },
-    resetSlug: function resetSlug() {
-      this.slug = this.convertTitle();
+    resetEditing: function resetEditing() {
+      this.setSlug(this.title);
+      this.$emit('reset', this.slug);
       this.wasEdited = false;
-      this.isEditing = false;
+      this.wasEditing = false;
+    },
+    setSlug: function setSlug(newVal) {
+      var count = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      if (newVal === '') return ''; // Slugify the newVal with the Slug component
+
+      var slug = Slug(newVal + (count > 0 ? "-".concat(count) : ''));
+      var vm = this;
+
+      if (this.api_token && slug) {
+        // test to see if unique
+        axios.get('/api/posts/unique', {
+          params: {
+            api_token: vm.api_token,
+            slug: slug
+          }
+        }).then(function (response) {
+          if (response.data) {
+            // if unique, the set the slug and emit event
+            vm.slug = slug;
+            vm.customSlug = slug;
+            vm.$emit('slug-changed', slug);
+          } else {
+            // if not, customize the slug to make it unique and teste again
+            vm.setSlug(newVal, count + 1);
+          }
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
     }
   },
   watch: {
     //title: function() {
     title: _.debounce(function () {
-      if (this.wasEdited === false) this.slug = this.convertTitle();
-    }, 500),
-    slug: function slug(val) {
-      this.$emit('slug-changed', val);
-    }
+      if (this.wasEdited === false) this.setSlug(this.title); // run ajax to see if slug is unique
+      // if not unique, customize the slug to make it unique
+    }, 500)
   }
 });
 
@@ -16276,7 +16328,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.slug-widget[data-v-a40bb44c] {\n  display: flex;\n  justify-content: flex-start;\n  align-items: center;\n}\n.wrapper[data-v-a40bb44c] {\n  margin-left: 8px;\n}\n.slug[data-v-a40bb44c] {\n  background-color: #fdfd96;\n  padding: 3px 5px;\n}\n.input[data-v-a40bb44c] {\n  width: auto;\n}\n.url-wrapper[data-v-a40bb44c] {\n  display: flex;\n  align-items: center;\n  height: 28px;\n}\n", ""]);
+exports.push([module.i, "\n.slug-widget[data-v-a40bb44c] {\n  display: flex;\n  justify-content: flex-start;\n  align-items: center;\n}\n.wrapper[data-v-a40bb44c] {\n  margin-left: 8px;\n}\n.slug[data-v-a40bb44c] {\n  background-color: #fdfd96;\n  padding: 3px 5px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.url-wrapper[data-v-a40bb44c] {\n  display: inline-flex;\n  align-items: center;\n  height: 28px;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n#slug-editor[data-v-a40bb44c] {\n  min-width: 142px;\n  max-width: 300px;\n}\n", ""]);
 
 // exports
 
@@ -45187,9 +45239,10 @@ var render = function() {
           }
         ],
         staticClass: "input is-small",
-        attrs: { type: "text", name: "slug-edit" },
+        attrs: { type: "text", name: "slug", id: "slug-editor" },
         domProps: { value: _vm.customSlug },
         on: {
+          keyup: _vm.adjustWidth,
           input: function($event) {
             if ($event.target.composing) {
               return
@@ -45212,7 +45265,7 @@ var render = function() {
               expression: "!isEditing"
             }
           ],
-          staticClass: "button is-small",
+          staticClass: "save-slug-button button is-small",
           on: {
             click: function($event) {
               $event.preventDefault()
@@ -45220,7 +45273,13 @@ var render = function() {
             }
           }
         },
-        [_vm._v("Edit")]
+        [
+          _vm._v(
+            "\n      " +
+              _vm._s(_vm.slug.length < 1 ? "Create New Slug" : "Edit") +
+              "\n    "
+          )
+        ]
       ),
       _vm._v(" "),
       _c(
@@ -45234,7 +45293,7 @@ var render = function() {
               expression: "isEditing"
             }
           ],
-          staticClass: "button is-small",
+          staticClass: "save-slug-button button is-small",
           on: {
             click: function($event) {
               $event.preventDefault()
@@ -45242,7 +45301,13 @@ var render = function() {
             }
           }
         },
-        [_vm._v("Save")]
+        [
+          _vm._v(
+            "\n      " +
+              _vm._s(_vm.customSlug == _vm.slug ? "Cancel" : "Save") +
+              "\n    "
+          )
+        ]
       ),
       _vm._v(" "),
       _c(
@@ -45256,11 +45321,11 @@ var render = function() {
               expression: "isEditing"
             }
           ],
-          staticClass: "button is-small",
+          staticClass: "save-slug-button button is-small",
           on: {
             click: function($event) {
               $event.preventDefault()
-              return _vm.resetSlug($event)
+              return _vm.resetEditing($event)
             }
           }
         },
@@ -45274,7 +45339,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "icon-wrapper" }, [
+    return _c("div", { staticClass: "icon-wrapper wrapper" }, [
       _c("i", { staticClass: "fa fa-link" })
     ])
   }
