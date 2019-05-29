@@ -27,7 +27,8 @@
           </b-field>
 
           {{--<p>{{url('/blog')}}</p>--}}
-        <slug-widget url="{{url('/')}}" subdirectory="blog" :title="title" @slug-changed="updateSlug"></slug-widget>
+          <slug-widget url="{{url('/')}}" subdirectory="blog" :title="title" 
+            @copied="slugCopied" @slug-changed="updateSlug"></slug-widget>
           <input type="hidden" v-model="slug" name="slug" />
 
           <b-field class="m-t-15">
@@ -39,7 +40,6 @@
               rows="20">
             </b-input>
           </b-field>
-
         </div> <!-- end of columns is-three-quarters -->
 
         <div class="column is-one-quarter-desktop is-narrow-tablet">
@@ -96,8 +96,10 @@
       methods: {
         updateSlug: function(val) {
           this.slug = val;
+        },
+        slugCopied: function(type, msg, val) {
+          notifications.toast(msg, {type: `is-${type}`});
         }
-        
       }
     });
   </script>

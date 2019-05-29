@@ -2052,6 +2052,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     url: {
@@ -2065,12 +2074,15 @@ __webpack_require__.r(__webpack_exports__);
     title: {
       type: String,
       required: true
+    },
+    icon: {
+      type: String,
+      default: "fa fa-link"
     }
   },
   data: function data() {
     return {
       slug: this.setSlug(this.title),
-      truncatedSlug: '',
       isEditing: false,
       customSlug: '',
       wasEdited: false,
@@ -2080,21 +2092,32 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     adjustWidth: function adjustWidth(event) {
       var val = event.target.value;
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      ctx.font = "14px sans-serif";
-      var slugEditorInput = document.getElementById('slu-editor');
-      slugEditorInput.style.width = Math.ceil(ctx.measureText(val).width + 25) + "px";
+      var key = event.key;
+
+      if (key === "Escape") {
+        event.preventDefault();
+        this.cancelEditing();
+      } else if (key === "Enter") {
+        event.preventDefault();
+        this.saveSlug();
+      } else {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        ctx.font = "14px sans-serif";
+        document.getElementById('slug-editor').style.width = Math.ceil(ctx.measureText(val).width + 25) + "px";
+      }
     },
     editSlug: function editSlug() {
       this.customSlug = this.slug;
       this.$emit('edit', this.slug);
       this.isEditing = true;
+      window.setTimeout(function () {
+        document.getElementById('slug-editor').focus();
+      }, 0); // must set timeout to wait for the thread
     },
     saveSlug: function saveSlug() {
-      var oldSlug = this.slug;
-      this.setSlug(this.customSlug);
       if (this.customSlug !== this.slug) this.wasEdited = true;
+      this.setSlug(this.customSlug);
       this.$emit('save', this.slug);
       this.isEditing = false;
     },
@@ -2102,7 +2125,11 @@ __webpack_require__.r(__webpack_exports__);
       this.setSlug(this.title);
       this.$emit('reset', this.slug);
       this.wasEdited = false;
-      this.wasEditing = false;
+      this.isEditing = false;
+    },
+    cancelEditing: function cancelEditing() {
+      this.$emit('cancel', this.customSlug, this.slug);
+      this.isEditing = false;
     },
     setSlug: function setSlug(newVal) {
       var count = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
@@ -2121,8 +2148,8 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (response) {
           if (response.data) {
             // if unique, the set the slug and emit event
-            vm.slug = slug;
-            vm.customSlug = slug;
+            vm.slug = slug; //vm.customSlug = slug;
+
             vm.$emit('slug-changed', slug);
           } else {
             // if not, customize the slug to make it unique and teste again
@@ -2132,6 +2159,37 @@ __webpack_require__.r(__webpack_exports__);
           console.log(error);
         });
       }
+    },
+    copyToClipboard: function copyToClipboard(val) {
+      var temp = document.createElement('textarea');
+      temp.value = val;
+      document.body.appendChild(temp);
+      temp.select();
+
+      try {
+        var success = document.execCommand('copy');
+        var type = success ? 'success' : 'warning';
+        var msg = success ? "Copied to Clipboard: ".concat(val) : "Copy failed, your browser may not support this feature";
+        this.$emit('copied', type, msg, val);
+        console.log("Copied to Clipboard:", val);
+      } catch (err) {
+        this.$emit('copy-failed', val);
+        console.log("Copy failed, your browser may not support this feature.");
+        console.log("Attempted to copy:", val);
+      }
+
+      document.body.removeChild(temp);
+    }
+  },
+  computed: {
+    urlSanitized: function urlSanitized() {
+      return this.url.replace(/^\/|\/$/g, '');
+    },
+    subdirectorySanitized: function subdirectorySanitized() {
+      return this.subdirectory.replace(/^\/|\/$/g, '');
+    },
+    fullUrl: function fullUrl() {
+      return "".concat(this.urlSanitized, "/").concat(this.subdirectorySanitized, "/").concat(this.slug);
     }
   },
   watch: {
@@ -45198,7 +45256,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "slug-widget" }, [
-    _vm._m(0),
+    _c("div", { staticClass: "icon-wrapper wrapper" }, [
+      _c("i", { class: _vm.icon })
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "url-wrapper wrapper" }, [
       _c("span", { staticClass: "root-url" }, [_vm._v(_vm._s(_vm.url))]),
@@ -45253,97 +45313,175 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "button-wrapper wrapper" }, [
-      _c(
-        "button",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: !_vm.isEditing,
-              expression: "!isEditing"
+    _c(
+      "div",
+      { staticClass: "button-wrapper wrapper" },
+      [
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.isEditing,
+                expression: "!isEditing"
+              }
+            ],
+            staticClass: "save-slug-button button is-small",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.editSlug($event)
+              }
             }
+          },
+          [_vm._v(_vm._s(_vm.slug.length < 1 ? "Create New Slug" : "Edit"))]
+        ),
+        _vm._v(" "),
+        _c(
+          "b-dropdown",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.isEditing && _vm.slug.length > 1,
+                expression: "!isEditing && slug.length > 1"
+              }
+            ],
+            attrs: { hoverable: "" }
+          },
+          [
+            _c(
+              "button",
+              {
+                staticClass: "save-slug-button button is-small",
+                attrs: { slot: "trigger" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                  }
+                },
+                slot: "trigger"
+              },
+              [
+                _c("span", [_vm._v("Actions")]),
+                _vm._v(" "),
+                _c("b-icon", { attrs: { icon: "arrow_drop_down" } })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-dropdown-item",
+              {
+                staticStyle: { "font-size": "0.8em" },
+                on: {
+                  click: function($event) {
+                    return _vm.copyToClipboard(_vm.fullUrl)
+                  }
+                }
+              },
+              [
+                _c("b-icon", {
+                  attrs: { icon: "content_copy", size: "is-small" }
+                }),
+                _vm._v(" Copy Full Url")
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-dropdown-item",
+              {
+                staticStyle: { "font-size": "0.8em" },
+                on: {
+                  click: function($event) {
+                    return _vm.copyToClipboard(_vm.slug)
+                  }
+                }
+              },
+              [
+                _c("b-icon", {
+                  attrs: { icon: "content_copy", size: "is-small" }
+                }),
+                _vm._v(" Copy Slug")
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-dropdown-item",
+              {
+                staticStyle: { "font-size": "0.8em" },
+                attrs: { "has-link": "" }
+              },
+              [
+                _c(
+                  "a",
+                  { attrs: { href: _vm.fullUrl, target: "_blank" } },
+                  [
+                    _c("b-icon", { attrs: { icon: "link", size: "is-small" } }),
+                    _vm._v("\n          Visit Url\n        ")
+                  ],
+                  1
+                )
+              ]
+            )
           ],
-          staticClass: "save-slug-button button is-small",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.editSlug($event)
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isEditing,
+                expression: "isEditing"
+              }
+            ],
+            staticClass: "save-slug-button button is-small",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.saveSlug($event)
+              }
             }
-          }
-        },
-        [
-          _vm._v(
-            "\n      " +
-              _vm._s(_vm.slug.length < 1 ? "Create New Slug" : "Edit") +
-              "\n    "
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.isEditing,
-              expression: "isEditing"
+          },
+          [_vm._v(_vm._s(_vm.customSlug == _vm.slug ? "Cancel" : "Save"))]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isEditing,
+                expression: "isEditing"
+              }
+            ],
+            staticClass: "save-slug-button button is-small",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.resetEditing($event)
+              }
             }
-          ],
-          staticClass: "save-slug-button button is-small",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.saveSlug($event)
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n      " +
-              _vm._s(_vm.customSlug == _vm.slug ? "Cancel" : "Save") +
-              "\n    "
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.isEditing,
-              expression: "isEditing"
-            }
-          ],
-          staticClass: "save-slug-button button is-small",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.resetEditing($event)
-            }
-          }
-        },
-        [_vm._v("Reset")]
-      )
-    ])
+          },
+          [_vm._v("Reset")]
+        )
+      ],
+      1
+    )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "icon-wrapper wrapper" }, [
-      _c("i", { staticClass: "fa fa-link" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
