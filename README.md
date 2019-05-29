@@ -1,5 +1,13 @@
 # Devmarketer Blog/CMS course
 
+# This tutorial is, actuali, not complete because the functionality crud of Posts is not included.
+
+
+8. ep.25
+- Laraflash
+  - composer require devmarketer/laraflash
+  - php artisan vendor:publish --tag=laraflash
+
 7. ep.23
 - API token autentication
   - php artisan migrate:reset
